@@ -71,37 +71,42 @@ router.delete("/thread/:threadId", async(req, res) => {
 })
 
 // Send message → get AI reply → save both → return reply
-router.post("/chat", async(req, res) => {
-    const {threadId, message} = req.body;
+router.post("/chat", async (req, res) => {
+  const { threadId, message } = req.body;
 
-    if(!threadId || !message){
-        res.status(400).json({error: "missing required filled"});
+  if (!threadId || !message) {
+    return res.status(400).json({ error: "Missing required fields" });
+  }
+
+  try {
+    let thread = await Thread.findOne({ threadId });
+
+    if (!thread) {
+      thread = new Thread({
+        threadId,
+        title: message,
+        messages: [{ role: "user", content: message }],
+      });
+    } else {
+      thread.messages.push({ role: "user", content: message });
     }
-    try {
-        const thread = await Thread.findOne({threadId});
 
-        if(!threadId){
-            //create a new thread in DB
-            thread = new Thread({
-                threadId,
-                title: message,
-                messages: [{role: "user", content: message}]
-            });
-        } else{
-            thread.messages.push({role: "user", content: message});
-        }
+    const assistantReply = await getOpenAIAPIResponse(message);
 
-        const assistantReply = await getOpenAIAPIResponse(message);
-        
-        thread.messages.push({role: "assistant", content: assistantReply});
-        thread.updatedAt = new Date();
+    thread.messages.push({
+      role: "assistant",
+      content: assistantReply,
+    });
 
-        await thread.save();
-        res.json({reply: assistantReply});
-    } catch (error) {
-        console.log(error);
-        res.status(500).json({error: "something want wrong"});
-    }
+    thread.updatedAt = new Date();
+
+    await thread.save();
+
+    res.json({ reply: assistantReply });
+
+  } catch (error) {
+    console.log("SERVER ERROR:", error);
+    res.status(500).json({ error: error.message });
+  }
 });
-
 export default router;
