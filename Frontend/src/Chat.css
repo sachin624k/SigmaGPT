@@ -1,0 +1,61 @@
+.chats {
+    max-width: 700px;
+    height: 75vh;
+    margin: 0 auto;
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    overflow-y: auto;
+    scroll-behavior: smooth;
+}
+
+/* Custom Scrollbar */
+.chats::-webkit-scrollbar {
+    width: 6px;
+}
+
+.chats::-webkit-scrollbar-thumb {
+    background: #444;
+    border-radius: 10px;
+}
+
+.chats::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.userDiv,
+.gptDiv {
+    display: flex;
+    width: 100%;
+}
+
+.userDiv {
+    justify-content: flex-end;
+}
+
+.gptDiv {
+    justify-content: flex-start;
+}
+
+.userMessage,
+.gptMessage {
+    padding: 12px 18px;
+    border-radius: 18px;
+    max-width: 80%;
+    word-wrap: break-word;
+    line-height: 1.5;
+    font-size: 0.95rem;
+}
+
+.userMessage {
+    background: #2f2f2f;
+    color: #ffffff;
+    border-bottom-right-radius: 5px;
+}
+
+.gptMessage {
+    background: #e1dfdf;
+    color: #000000;
+    border-bottom-left-radius: 5px;
+}
