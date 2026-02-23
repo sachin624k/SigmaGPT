@@ -45,17 +45,41 @@
     max-width: 80%;
     word-wrap: break-word;
     line-height: 1.5;
-    font-size: 0.95rem;
+    font-size: 0.98rem;
+    font-weight: 400;
 }
 
 .userMessage {
-    background: #2f2f2f;
+    background: #1d1d1db8;
     color: #ffffff;
     border-bottom-right-radius: 5px;
 }
 
 .gptMessage {
-    background: #e1dfdf;
-    color: #000000;
+    background: #00000067;
+    color: #ffffff;
     border-bottom-left-radius: 5px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    text-align: left;
 }
+
+.gptMessage pre {
+    width: 100%;
+    text-align: left;
+    margin: 0.8rem 0;
+}
+
+.gptMessage code {
+    text-align: left;
+}
+
+.gptMessage p {
+    margin: 0 0 0.8rem 0;
+}
+
+.hljs {
+    border-radius: 14px !important;
+}
+
