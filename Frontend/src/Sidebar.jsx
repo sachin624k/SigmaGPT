@@ -1,17 +1,17 @@
 import "./Sidebar.css";
 import { useContext, useEffect } from "react";
 import { MyContext } from "./MyContext.jsx";
-import {v1 as uuidv1} from "uuid";
+import { v1 as uuidv1 } from "uuid";
 
 function Sidebar() {
   const { allThreads, setAllThreads, currThreadId, setNewChat, setPrompt, setReply, setCurrThreadId, setPrevChats } = useContext(MyContext);
 
-  const getAllThreads = async() => {
+  const getAllThreads = async () => {
 
     try {
       const response = await fetch("http://localhost:8080/api/thread");
       const res = await response.json();
-      const filteredData = res.map(thread => ({threadId: thread.threadId, title: thread.title}));
+      const filteredData = res.map(thread => ({ threadId: thread.threadId, title: thread.title }));
       //console.log(filteredData);
       setAllThreads(filteredData);
     } catch (error) {
@@ -31,7 +31,7 @@ function Sidebar() {
     setPrevChats([]);
   }
 
-  const changeThread = async(newThreadId) => {
+  const changeThread = async (newThreadId) => {
     setCurrThreadId(newThreadId);
 
     try {
@@ -46,6 +46,24 @@ function Sidebar() {
     }
   }
 
+  const deleteThread = async(threadId) => {
+    try {
+      const response = await fetch(`http://localhost:8080/api/thread/${threadId}`, {method: "DELETE"});
+      const res = await response.json();
+      console.log(res);
+
+      //updated threads re-render
+      setAllThreads(prev => prev.filter(thread => thread.threadId != threadId));
+
+      if(threadId === currThreadId) {
+        createNewChat();
+      }
+      
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   return (
     <section className="sidebar">
       <button onClick={createNewChat}>
@@ -55,13 +73,19 @@ function Sidebar() {
 
       <ul className="history">
         {
-          allThreads ?.map((thread, idx) => (
-            <li key={idx} 
-            onClick={(e) => changeThread(thread.threadId)}
-            >{thread.title}</li>
+          allThreads?.map((thread, idx) => (
+            <li key={idx}
+              onClick={(e) => changeThread(thread.threadId)}
+              className={thread.threadId === currThreadId ? "highlighted" : " "}
+            >{thread.title}
+            <i class="fa fa-trash" aria-hidden="true" onClick={(e) => {
+              e.stopPropagation(); //stop event bubbling
+              deleteThread(thread.threadId);
+            }}></i>
+            </li>
           ))
         }
-      </ul> 
+      </ul>
 
       <div className="sign">
         <p>By sachin624k &hearts;</p>
