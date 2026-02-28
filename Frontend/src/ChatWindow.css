@@ -156,6 +156,6 @@ input:focus {
 }
 
 .dropDownItem:hover {
-    background-color: rgba(180, 180, 180, 0.171);
+    background-color: rgba(180, 180, 180, 0.105);
     border-radius: 6px;
 }

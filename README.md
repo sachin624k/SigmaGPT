@@ -1,3 +1,21 @@
+<p align="center">
+  <img 
+    src="./assets/img1.png" 
+    alt="SigmaGPT Image 1"
+    width="700"
+    height="400"
+  />
+</p>
+
+<p align="center">
+  <img 
+    src="./assets/img2.png" 
+    alt="SigmaGPT Image 2"
+    width="700"
+    height="400"
+  />
+</p>
+
 ## 🚀 SigmaGPT – Full Stack AI Chat Application
 
 SigmaGPT is a thread-based AI chat application built using:
